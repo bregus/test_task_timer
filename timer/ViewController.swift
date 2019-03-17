@@ -44,11 +44,15 @@ class ViewController: UIViewController {
     @objc func pressed(sender: UIButton!) {
         if (timer.isValid) {
             timer.invalidate()
+            resetButton.isEnabled = true
+            resetButton.alpha = 1.0
             stopTime = NSDate.timeIntervalSinceReferenceDate
             handleButton.backgroundColor = .darkGreen
             handleButton.setTitleColor(.lightGreen, for: .normal)
             handleButton.setTitle("Start", for: .normal)
         } else {
+            resetButton.isEnabled = false
+            resetButton.alpha = 0.5
             if startTime == 0.0 {
                 startTime = NSDate.timeIntervalSinceReferenceDate
             } else {
@@ -63,7 +67,6 @@ class ViewController: UIViewController {
     }
     
     @objc func reset(sender: UIButton!) {
-        timer.invalidate()
         startTime = 0.0
         stopTime = 0.0
         label.text = "00:00,00"
@@ -99,25 +102,5 @@ extension TimeInterval{
         let minutes = (time / 60) % 60
         
         return String(format: "%0.2d:%0.2d,%0.2d",minutes,seconds,ms)
-    }
-}
-
-extension UIButton {
-    func drawCircle() {
-        var circleLayer: CAShapeLayer!
-        let circlePath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width / 2.0, y: frame.size.height / 2.0), radius: (frame.size.width - 10)/2 + 9, startAngle: 0.0, endAngle: CGFloat(Double.pi * 2.0), clockwise: true)
-        
-        // Setup the CAShapeLayer with the path, colors, and line width
-        circleLayer = CAShapeLayer()
-        circleLayer.path = circlePath.cgPath
-        circleLayer.fillColor = UIColor.clear.cgColor
-        circleLayer.strokeColor =  backgroundColor!.cgColor
-        circleLayer.lineWidth = 2.0;
-
-        // Don't draw the circle initially
-        circleLayer.strokeEnd = 1.0
-        
-        // Add the circleLayer to the view's layer's sublayers
-        layer.addSublayer(circleLayer)
     }
 }
